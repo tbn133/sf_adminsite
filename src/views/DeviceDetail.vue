@@ -54,7 +54,9 @@
                   <q-icon name="label" size="24px" color="primary" class="q-mr-md" />
                   <div class="col">
                     <div class="text-caption text-grey-6">Tên thiết bị</div>
-                    <div class="text-body1 text-weight-medium">{{ device.name || 'Unnamed Device' }}</div>
+                    <div class="text-body1 text-weight-medium">
+                      {{ device.name || 'Unnamed Device' }}
+                    </div>
                   </div>
                 </div>
                 <q-separator />
@@ -77,7 +79,9 @@
                   <q-icon name="schedule" size="24px" color="primary" class="q-mr-md" />
                   <div class="col">
                     <div class="text-caption text-grey-6">Lần cuối hoạt động</div>
-                    <div class="text-body1 text-weight-medium">{{ formatDate(device.last_seen) }}</div>
+                    <div class="text-body1 text-weight-medium">
+                      {{ formatDate(device.last_seen) }}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -112,6 +116,43 @@
                     </q-card-section>
                   </q-card>
                 </div>
+
+                <!-- VPD Card -->
+                <div
+                  class="col-6"
+                  v-if="latestSensorData.vpd !== null && latestSensorData.vpd !== undefined"
+                >
+                  <q-card flat :class="getVPDCardClass(latestSensorData.vpd)">
+                    <q-card-section class="text-center">
+                      <q-icon
+                        name="air"
+                        size="32px"
+                        :color="getVPDColor(latestSensorData.vpd)"
+                        class="q-mb-xs"
+                      />
+                      <div
+                        class="text-h6 text-weight-bold"
+                        :class="`text-${getVPDColor(latestSensorData.vpd)}-9`"
+                      >
+                        {{ formatVPD(latestSensorData.vpd) }} kPa
+                      </div>
+                      <div class="text-caption text-grey-7">
+                        VPD
+                        <q-tooltip class="bg-grey-9 text-body2" max-width="300px">
+                          <div class="text-weight-bold q-mb-xs">Vapor Pressure Deficit</div>
+                          <div>{{ getVPDStatus(latestSensorData.vpd) }}</div>
+                          <div class="q-mt-xs text-grey-4">Optimal: 0.8-1.2 kPa</div>
+                        </q-tooltip>
+                      </div>
+                      <q-badge
+                        :color="getVPDColor(latestSensorData.vpd)"
+                        :label="getVPDLabel(latestSensorData.vpd)"
+                        class="q-mt-xs"
+                      />
+                    </q-card-section>
+                  </q-card>
+                </div>
+
                 <div class="col-6">
                   <q-card flat class="bg-brown-1">
                     <q-card-section class="text-center">
@@ -183,11 +224,7 @@
                       <div class="text-weight-medium">Máy bơm (Pump)</div>
                       <div class="text-caption text-grey-6">Hệ thống tưới nước</div>
                     </div>
-                    <q-toggle
-                      v-model="controlCommand.pump"
-                      color="primary"
-                      size="lg"
-                    />
+                    <q-toggle v-model="controlCommand.pump" color="primary" size="lg" />
                   </q-card-section>
                 </q-card>
 
@@ -198,11 +235,7 @@
                       <div class="text-weight-medium">Quạt (Fan)</div>
                       <div class="text-caption text-grey-6">Hệ thống thông gió</div>
                     </div>
-                    <q-toggle
-                      v-model="controlCommand.fan"
-                      color="secondary"
-                      size="lg"
-                    />
+                    <q-toggle v-model="controlCommand.fan" color="secondary" size="lg" />
                   </q-card-section>
                 </q-card>
 
@@ -213,11 +246,7 @@
                       <div class="text-weight-medium">Đèn (Light)</div>
                       <div class="text-caption text-grey-6">Hệ thống chiếu sáng</div>
                     </div>
-                    <q-toggle
-                      v-model="controlCommand.light"
-                      color="accent"
-                      size="lg"
-                    />
+                    <q-toggle v-model="controlCommand.light" color="accent" size="lg" />
                   </q-card-section>
                 </q-card>
               </div>
@@ -278,23 +307,59 @@ const sending = ref(false)
 const controlCommand = ref({
   pump: false,
   fan: false,
-  light: false
+  light: false,
 })
 
 const logColumns = [
-  { name: 'timestamp', label: 'Thời gian', field: 'timestamp', format: (val) => val ? format(new Date(val), 'dd/MM/yyyy HH:mm:ss') : 'N/A' },
-  { name: 'temperature', label: 'Nhiệt độ', field: 'temperature' },
-  { name: 'humidity', label: 'Độ ẩm', field: 'humidity' },
-  { name: 'soil_moisture', label: 'Độ ẩm đất', field: 'soil_moisture' },
-  { name: 'light_intensity', label: 'Ánh sáng', field: 'light_intensity' }
+  {
+    name: 'timestamp',
+    label: 'Thời gian',
+    field: 'timestamp',
+    format: val => (val ? format(new Date(val), 'dd/MM/yyyy HH:mm:ss') : 'N/A'),
+  },
+  {
+    name: 'temperature',
+    label: 'Nhiệt độ',
+    field: 'temperature',
+    format: val => (val !== null && val !== undefined ? `${val.toFixed(1)}°C` : 'N/A'),
+  },
+  {
+    name: 'humidity',
+    label: 'Độ ẩm',
+    field: 'humidity',
+    format: val => (val !== null && val !== undefined ? `${val.toFixed(1)}%` : 'N/A'),
+  },
+  {
+    name: 'vpd',
+    label: 'VPD',
+    field: 'vpd',
+    format: val => (val !== null && val !== undefined ? `${val.toFixed(2)} kPa` : 'N/A'),
+  },
+  {
+    name: 'soil_moisture',
+    label: 'Độ ẩm đất',
+    field: 'soil_moisture',
+    format: val => (val !== null && val !== undefined ? `${val.toFixed(1)}%` : 'N/A'),
+  },
+  {
+    name: 'light_intensity',
+    label: 'Ánh sáng',
+    field: 'light_intensity',
+    format: val => (val !== null && val !== undefined ? `${val.toFixed(0)} lux` : 'N/A'),
+  },
 ]
 
 const controlHistoryColumns = [
-  { name: 'timestamp', label: 'Thời gian', field: 'timestamp', format: (val) => val ? format(new Date(val), 'dd/MM/yyyy HH:mm:ss') : 'N/A' },
-  { name: 'pump', label: 'Pump', field: 'pump', format: (val) => val ? 'ON' : 'OFF' },
-  { name: 'fan', label: 'Fan', field: 'fan', format: (val) => val ? 'ON' : 'OFF' },
-  { name: 'light', label: 'Light', field: 'light', format: (val) => val ? 'ON' : 'OFF' },
-  { name: 'source', label: 'Nguồn', field: 'source' }
+  {
+    name: 'timestamp',
+    label: 'Thời gian',
+    field: 'timestamp',
+    format: val => (val ? format(new Date(val), 'dd/MM/yyyy HH:mm:ss') : 'N/A'),
+  },
+  { name: 'pump', label: 'Pump', field: 'pump', format: val => (val ? 'ON' : 'OFF') },
+  { name: 'fan', label: 'Fan', field: 'fan', format: val => (val ? 'ON' : 'OFF') },
+  { name: 'light', label: 'Light', field: 'light', format: val => (val ? 'ON' : 'OFF') },
+  { name: 'source', label: 'Nguồn', field: 'source' },
 ]
 
 function formatDate(date) {
@@ -303,12 +368,7 @@ function formatDate(date) {
 }
 
 async function refresh() {
-  await Promise.all([
-    fetchDeviceInfo(),
-    fetchLatestSensor(),
-    fetchLogs(),
-    fetchControlHistory()
-  ])
+  await Promise.all([fetchDeviceInfo(), fetchLatestSensor(), fetchLogs(), fetchControlHistory()])
 }
 
 async function fetchDeviceInfo() {
@@ -361,14 +421,14 @@ async function sendControl() {
       type: 'positive',
       message: 'Lệnh điều khiển đã được gửi thành công',
       position: 'top',
-      timeout: 2000
+      timeout: 2000,
     })
     await fetchControlHistory()
   } catch (error) {
     $q.notify({
       type: 'negative',
       message: 'Lỗi: ' + error.message,
-      position: 'top'
+      position: 'top',
     })
   } finally {
     sending.value = false
@@ -380,14 +440,52 @@ async function resetDevice() {
     await adminAPI.resetDevice(deviceId.value)
     $q.notify({
       type: 'positive',
-      message: 'Lệnh reset đã được gửi'
+      message: 'Lệnh reset đã được gửi',
     })
   } catch (error) {
     $q.notify({
       type: 'negative',
-      message: 'Lỗi: ' + error.message
+      message: 'Lỗi: ' + error.message,
     })
   }
+}
+
+// VPD Helper Functions
+function formatVPD(vpd) {
+  if (vpd === null || vpd === undefined) return 'N/A'
+  return Number(vpd).toFixed(2)
+}
+
+function getVPDColor(vpd) {
+  if (vpd < 0.4) return 'blue'
+  if (vpd < 0.8) return 'light-green'
+  if (vpd < 1.2) return 'green'
+  if (vpd < 1.5) return 'amber'
+  if (vpd < 1.8) return 'orange'
+  return 'red'
+}
+
+function getVPDCardClass(vpd) {
+  const color = getVPDColor(vpd)
+  return `bg-${color}-1`
+}
+
+function getVPDLabel(vpd) {
+  if (vpd < 0.4) return 'Quá thấp'
+  if (vpd < 0.8) return 'Thấp'
+  if (vpd < 1.2) return 'Tối ưu'
+  if (vpd < 1.5) return 'Cao'
+  if (vpd < 1.8) return 'Quá cao'
+  return 'Nguy hiểm'
+}
+
+function getVPDStatus(vpd) {
+  if (vpd < 0.4) return 'VPD quá thấp - Nguy cơ nấm mốc, bệnh lá. Tăng nhiệt độ hoặc giảm độ ẩm.'
+  if (vpd < 0.8) return 'VPD thấp - Tốt cho cây con và giâm cành. Thoát hơi nước chậm.'
+  if (vpd < 1.2) return 'VPD tối ưu - Tăng trưởng mạnh, hấp thu dinh dưỡng tốt nhất.'
+  if (vpd < 1.5) return 'VPD cao - Tốt cho giai đoạn cuối. Thoát hơi nước nhanh.'
+  if (vpd < 1.8) return 'VPD quá cao - Nguy cơ stress, cháy lá. Giảm nhiệt độ hoặc tăng độ ẩm.'
+  return 'VPD nguy hiểm - Cây đang bị stress nặng! Điều chỉnh ngay.'
 }
 
 onMounted(() => {
@@ -404,4 +502,3 @@ onMounted(() => {
   background-color: rgba(25, 118, 210, 0.04);
 }
 </style>
-

@@ -23,49 +23,49 @@
       </div>
 
       <q-card class="modern-card" flat>
-      <q-table
-        :rows="schedules"
-        :columns="columns"
-        row-key="id"
-        :loading="loading"
-        :rows-per-page-options="[10, 20, 50]"
-      >
-        <template v-slot:body-cell-actions="props">
-          <q-td :props="props">
-            <div class="row q-gutter-xs">
-              <q-btn
-                flat
-                round
-                dense
-                icon="edit"
-                color="primary"
-                size="sm"
-                @click="editSchedule(props.row)"
-              >
-                <q-tooltip>Chỉnh sửa</q-tooltip>
-              </q-btn>
-              <q-btn
-                flat
-                round
-                dense
-                icon="delete"
-                color="negative"
-                size="sm"
-                @click="deleteSchedule(props.row.id)"
-              >
-                <q-tooltip>Xóa</q-tooltip>
-              </q-btn>
-            </div>
-          </q-td>
-        </template>
+        <q-table
+          :rows="schedules"
+          :columns="columns"
+          row-key="id"
+          :loading="loading"
+          :rows-per-page-options="[10, 20, 50]"
+        >
+          <template v-slot:body-cell-actions="props">
+            <q-td :props="props">
+              <div class="row q-gutter-xs">
+                <q-btn
+                  flat
+                  round
+                  dense
+                  icon="edit"
+                  color="primary"
+                  size="sm"
+                  @click="editSchedule(props.row)"
+                >
+                  <q-tooltip>Chỉnh sửa</q-tooltip>
+                </q-btn>
+                <q-btn
+                  flat
+                  round
+                  dense
+                  icon="delete"
+                  color="negative"
+                  size="sm"
+                  @click="deleteSchedule(props.row.id)"
+                >
+                  <q-tooltip>Xóa</q-tooltip>
+                </q-btn>
+              </div>
+            </q-td>
+          </template>
 
-        <template v-slot:no-data>
-          <div class="full-width row flex-center text-grey-6 q-gutter-sm q-pa-lg">
-            <q-icon name="schedule" size="2em" />
-            <span>Chưa có lịch trình nào</span>
-          </div>
-        </template>
-      </q-table>
+          <template v-slot:no-data>
+            <div class="full-width row flex-center text-grey-6 q-gutter-sm q-pa-lg">
+              <q-icon name="schedule" size="2em" />
+              <span>Chưa có lịch trình nào</span>
+            </div>
+          </template>
+        </q-table>
       </q-card>
     </div>
 
@@ -124,13 +124,7 @@
 
         <q-card-actions align="right" class="q-pa-md">
           <q-btn flat label="Hủy" color="grey-7" v-close-popup />
-          <q-btn
-            unelevated
-            label="Lưu"
-            color="primary"
-            icon="save"
-            @click="saveSchedule"
-          />
+          <q-btn unelevated label="Lưu" color="primary" icon="save" @click="saveSchedule" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -152,7 +146,7 @@ const editingSchedule = ref(null)
 const scheduleForm = ref({
   crop_name: '',
   start_date: new Date().toISOString().split('T')[0],
-  schedule_json: []
+  schedule_json: [],
 })
 
 const columns = [
@@ -160,7 +154,7 @@ const columns = [
   { name: 'crop_name', label: 'Tên cây trồng', field: 'crop_name' },
   { name: 'start_date', label: 'Ngày bắt đầu', field: 'start_date' },
   { name: 'device_count', label: 'Số thiết bị', field: 'device_count' },
-  { name: 'actions', label: 'Thao tác', align: 'center' }
+  { name: 'actions', label: 'Thao tác', align: 'center' },
 ]
 
 function editSchedule(schedule) {
@@ -168,7 +162,7 @@ function editSchedule(schedule) {
   scheduleForm.value = {
     crop_name: schedule.crop_name,
     start_date: schedule.start_date,
-    schedule_json: schedule.schedule_json
+    schedule_json: schedule.schedule_json,
   }
   showCreateDialog.value = true
 }
@@ -194,7 +188,7 @@ async function deleteSchedule(id) {
     title: 'Xác nhận',
     message: 'Bạn có chắc muốn xóa lịch trình này?',
     cancel: true,
-    persistent: true
+    persistent: true,
   }).onOk(async () => {
     try {
       await schedulesAPI.delete(id)
@@ -270,4 +264,3 @@ onMounted(() => {
   }
 }
 </style>
-

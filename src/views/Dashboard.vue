@@ -38,7 +38,9 @@
                 </q-chip>
               </div>
               <div class="text-overline text-grey-6 q-mb-xs">Tổng thiết bị</div>
-              <div class="text-h3 text-weight-bold text-grey-9">{{ stats?.total_devices || 0 }}</div>
+              <div class="text-h3 text-weight-bold text-grey-9">
+                {{ stats?.total_devices || 0 }}
+              </div>
               <div class="text-caption text-grey-6 q-mt-sm">Đang hoạt động trong hệ thống</div>
             </q-card-section>
           </q-card>
@@ -56,7 +58,9 @@
                 </q-badge>
               </div>
               <div class="text-overline text-grey-6 q-mb-xs">Thiết bị online</div>
-              <div class="text-h3 text-weight-bold text-positive">{{ stats?.online_devices || 0 }}</div>
+              <div class="text-h3 text-weight-bold text-positive">
+                {{ stats?.online_devices || 0 }}
+              </div>
               <div class="text-caption text-grey-6 q-mt-sm">Đang kết nối và hoạt động</div>
             </q-card-section>
           </q-card>
@@ -74,7 +78,9 @@
                 </q-chip>
               </div>
               <div class="text-overline text-grey-6 q-mb-xs">Thiết bị offline</div>
-              <div class="text-h3 text-weight-bold text-negative">{{ stats?.offline_devices || 0 }}</div>
+              <div class="text-h3 text-weight-bold text-negative">
+                {{ stats?.offline_devices || 0 }}
+              </div>
               <div class="text-caption text-grey-6 q-mt-sm">Mất kết nối hoặc tắt</div>
             </q-card-section>
           </q-card>
@@ -87,12 +93,12 @@
                 <div class="stat-icon-wrapper bg-warning-light">
                   <q-icon name="warning" size="28px" color="warning" />
                 </div>
-                <q-badge color="warning" rounded text-color="white">
-                  Mới
-                </q-badge>
+                <q-badge color="warning" rounded text-color="white"> Mới </q-badge>
               </div>
               <div class="text-overline text-grey-6 q-mb-xs">Cảnh báo</div>
-              <div class="text-h3 text-weight-bold text-warning">{{ stats?.active_alerts || 0 }}</div>
+              <div class="text-h3 text-weight-bold text-warning">
+                {{ stats?.active_alerts || 0 }}
+              </div>
               <div class="text-caption text-grey-6 q-mt-sm">Cần xử lý ngay</div>
             </q-card-section>
           </q-card>
@@ -119,7 +125,9 @@
                         <q-icon name="schedule" size="24px" />
                       </div>
                       <div class="q-ml-md">
-                        <div class="text-h5 text-weight-bold text-purple-9">{{ stats?.total_schedules || 0 }}</div>
+                        <div class="text-h5 text-weight-bold text-purple-9">
+                          {{ stats?.total_schedules || 0 }}
+                        </div>
                         <div class="text-caption text-grey-7">Lịch trình đang chạy</div>
                       </div>
                     </div>
@@ -132,7 +140,9 @@
                         <q-icon name="settings" size="24px" />
                       </div>
                       <div class="q-ml-md">
-                        <div class="text-h5 text-weight-bold text-teal-9">{{ stats?.total_rules || 0 }}</div>
+                        <div class="text-h5 text-weight-bold text-teal-9">
+                          {{ stats?.total_rules || 0 }}
+                        </div>
                         <div class="text-caption text-grey-7">Quy tắc tự động</div>
                       </div>
                     </div>
@@ -202,9 +212,7 @@
                         />
                         {{ device.online ? 'Online' : 'Offline' }}
                       </q-badge>
-                      <div class="text-caption text-grey-6 q-mt-xs">
-                        Cập nhật 5 phút trước
-                      </div>
+                      <div class="text-caption text-grey-6 q-mt-xs">Cập nhật 5 phút trước</div>
                     </div>
                   </q-item-section>
                 </q-item>
@@ -293,10 +301,7 @@ const appStore = useAppStore()
 const { stats, devices, loading } = storeToRefs(appStore)
 
 async function refresh() {
-  await Promise.all([
-    appStore.fetchStats(),
-    appStore.fetchDevices()
-  ])
+  await Promise.all([appStore.fetchStats(), appStore.fetchDevices()])
 }
 
 onMounted(async () => {
@@ -396,7 +401,8 @@ onMounted(async () => {
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -502,4 +508,3 @@ onMounted(async () => {
   }
 }
 </style>
-

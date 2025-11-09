@@ -32,7 +32,7 @@ class WebSocketService {
         this.startPingPong()
       }
 
-      this.ws.onmessage = (event) => {
+      this.ws.onmessage = event => {
         try {
           const data = JSON.parse(event.data)
 
@@ -53,7 +53,7 @@ class WebSocketService {
         }
       }
 
-      this.ws.onerror = (error) => {
+      this.ws.onerror = error => {
         console.error('WebSocket error:', error)
         this.emit('error', error)
       }
@@ -89,7 +89,9 @@ class WebSocketService {
       this.reconnectAttempts++
       // Exponential backoff: 1s, 2s, 4s, 8s, 16s, 30s (max)
       const delay = Math.min(1000 * Math.pow(2, this.reconnectAttempts), 30000)
-      console.log(`Reconnecting in ${delay}ms... (attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts})`)
+      console.log(
+        `Reconnecting in ${delay}ms... (attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts})`
+      )
 
       this.emit('reconnecting', { attempt: this.reconnectAttempts, delay })
 
@@ -148,19 +150,23 @@ class WebSocketService {
 
   subscribe(deviceId) {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-      this.ws.send(JSON.stringify({
-        type: 'subscribe',
-        device_id: deviceId
-      }))
+      this.ws.send(
+        JSON.stringify({
+          type: 'subscribe',
+          device_id: deviceId,
+        })
+      )
     }
   }
 
   unsubscribe(deviceId) {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-      this.ws.send(JSON.stringify({
-        type: 'unsubscribe',
-        device_id: deviceId
-      }))
+      this.ws.send(
+        JSON.stringify({
+          type: 'unsubscribe',
+          device_id: deviceId,
+        })
+      )
     }
   }
 
@@ -230,4 +236,3 @@ class WebSocketService {
 }
 
 export default new WebSocketService()
-

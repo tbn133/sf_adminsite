@@ -24,58 +24,58 @@
       </div>
 
       <q-card class="modern-card" flat>
-      <q-table
-        :rows="pairings"
-        :columns="columns"
-        row-key="id"
-        :loading="loading"
-        :rows-per-page-options="[10, 20, 50]"
-      >
-      <template v-slot:body-cell-actions="props">
-        <q-td :props="props">
-          <div class="row q-gutter-xs">
-            <q-btn
-              flat
-              round
-              dense
-              icon="check"
-              color="positive"
-              size="sm"
-              @click="approvePairing(props.row)"
-            >
-              <q-tooltip>Chấp nhận</q-tooltip>
-            </q-btn>
-            <q-btn
-              flat
-              round
-              dense
-              icon="close"
-              color="negative"
-              size="sm"
-              @click="rejectPairing(props.row)"
-            >
-              <q-tooltip>Từ chối</q-tooltip>
-            </q-btn>
-          </div>
-        </q-td>
-      </template>
+        <q-table
+          :rows="pairings"
+          :columns="columns"
+          row-key="id"
+          :loading="loading"
+          :rows-per-page-options="[10, 20, 50]"
+        >
+          <template v-slot:body-cell-actions="props">
+            <q-td :props="props">
+              <div class="row q-gutter-xs">
+                <q-btn
+                  flat
+                  round
+                  dense
+                  icon="check"
+                  color="positive"
+                  size="sm"
+                  @click="approvePairing(props.row)"
+                >
+                  <q-tooltip>Chấp nhận</q-tooltip>
+                </q-btn>
+                <q-btn
+                  flat
+                  round
+                  dense
+                  icon="close"
+                  color="negative"
+                  size="sm"
+                  @click="rejectPairing(props.row)"
+                >
+                  <q-tooltip>Từ chối</q-tooltip>
+                </q-btn>
+              </div>
+            </q-td>
+          </template>
 
-      <template v-slot:no-data>
-        <div class="full-width row flex-center text-grey-6 q-gutter-sm q-pa-lg">
-          <q-icon name="link_off" size="2em" />
-          <span>Không có yêu cầu nào</span>
-        </div>
-      </template>
+          <template v-slot:no-data>
+            <div class="full-width row flex-center text-grey-6 q-gutter-sm q-pa-lg">
+              <q-icon name="link_off" size="2em" />
+              <span>Không có yêu cầu nào</span>
+            </div>
+          </template>
 
-      <template v-slot:body-cell-device_info="props">
-        <q-td :props="props">
-          <div v-if="props.row.device_info">
-            <div>{{ props.row.device_info.platform }} {{ props.row.device_info.version }}</div>
-            <div class="text-caption">{{ props.row.device_info.model }}</div>
-          </div>
-        </q-td>
-      </template>
-      </q-table>
+          <template v-slot:body-cell-device_info="props">
+            <q-td :props="props">
+              <div v-if="props.row.device_info">
+                <div>{{ props.row.device_info.platform }} {{ props.row.device_info.version }}</div>
+                <div class="text-caption">{{ props.row.device_info.model }}</div>
+              </div>
+            </q-td>
+          </template>
+        </q-table>
       </q-card>
     </div>
 
@@ -144,7 +144,7 @@ const showApproveDialog = ref(false)
 const selectedPairing = ref(null)
 const approveForm = ref({
   max_devices: 1,
-  expires_days: null
+  expires_days: null,
 })
 
 const columns = [
@@ -153,8 +153,13 @@ const columns = [
   { name: 'app_name', label: 'App Name', field: 'app_name' },
   { name: 'app_version', label: 'Version', field: 'app_version' },
   { name: 'device_info', label: 'Device Info', field: 'device_info' },
-  { name: 'created_at', label: 'Created', field: 'created_at', format: (val) => val ? new Date(val).toLocaleString('vi-VN') : 'N/A' },
-  { name: 'actions', label: 'Actions', align: 'center' }
+  {
+    name: 'created_at',
+    label: 'Created',
+    field: 'created_at',
+    format: val => (val ? new Date(val).toLocaleString('vi-VN') : 'N/A'),
+  },
+  { name: 'actions', label: 'Actions', align: 'center' },
 ]
 
 async function refresh() {
@@ -165,7 +170,7 @@ async function refresh() {
   } catch (error) {
     $q.notify({
       type: 'negative',
-      message: 'Error loading pairings: ' + (error.response?.data?.detail || error.message)
+      message: 'Error loading pairings: ' + (error.response?.data?.detail || error.message),
     })
   } finally {
     loading.value = false
@@ -176,7 +181,7 @@ function approvePairing(pairing) {
   selectedPairing.value = pairing
   approveForm.value = {
     max_devices: 1,
-    expires_days: null
+    expires_days: null,
   }
   showApproveDialog.value = true
 }
@@ -190,7 +195,7 @@ async function confirmApprove() {
     if (approveForm.value.expires_days) {
       params.append('expires_days', approveForm.value.expires_days.toString())
     }
-    
+
     const response = await adminAPI.post(
       `/admin/pairings/${selectedPairing.value.id}/approve?${params.toString()}`,
       {}
@@ -198,16 +203,16 @@ async function confirmApprove() {
     const licenseKey = response.data?.license_key || response.license_key
     $q.notify({
       type: 'positive',
-      message: licenseKey 
+      message: licenseKey
         ? `Pairing approved! License: ${licenseKey.substring(0, 20)}...`
-        : 'Pairing approved successfully'
+        : 'Pairing approved successfully',
     })
     showApproveDialog.value = false
     await refresh()
   } catch (error) {
     $q.notify({
       type: 'negative',
-      message: 'Error approving pairing: ' + (error.response?.data?.detail || error.message)
+      message: 'Error approving pairing: ' + (error.response?.data?.detail || error.message),
     })
   }
 }
@@ -221,9 +226,9 @@ async function rejectPairing(pairing) {
     prompt: {
       model: '',
       type: 'text',
-      label: 'Reason (optional)'
-    }
-  }).onOk(async (reason) => {
+      label: 'Reason (optional)',
+    },
+  }).onOk(async reason => {
     try {
       const params = new URLSearchParams()
       if (reason) {
@@ -233,13 +238,13 @@ async function rejectPairing(pairing) {
       await adminAPI.post(url, {})
       $q.notify({
         type: 'positive',
-        message: 'Pairing rejected'
+        message: 'Pairing rejected',
       })
       await refresh()
     } catch (error) {
       $q.notify({
         type: 'negative',
-        message: 'Error rejecting pairing: ' + (error.response?.data?.detail || error.message)
+        message: 'Error rejecting pairing: ' + (error.response?.data?.detail || error.message),
       })
     }
   })
@@ -309,4 +314,3 @@ onMounted(() => {
   }
 }
 </style>
-

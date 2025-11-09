@@ -12,116 +12,116 @@
       </div>
 
       <div class="row q-gutter-md">
-      <q-card class="col-12 col-md-6 modern-card" flat>
-        <q-card-section class="bg-primary text-white">
-          <div class="text-h6 text-weight-bold">Xuất CSV</div>
-        </q-card-section>
-        <q-card-section class="q-pa-lg">
-          <div class="q-gutter-md">
-            <q-select
-              v-model="selectedDevice"
-              :options="deviceOptions"
-              option-label="label"
-              option-value="value"
-              emit-value
-              map-options
-              label="Chọn thiết bị"
-              outlined
-              dense
-              clearable
-              hint="Để trống để xuất tất cả thiết bị"
-            >
-              <template v-slot:prepend>
-                <q-icon name="devices" />
-              </template>
-            </q-select>
+        <q-card class="col-12 col-md-6 modern-card" flat>
+          <q-card-section class="bg-primary text-white">
+            <div class="text-h6 text-weight-bold">Xuất CSV</div>
+          </q-card-section>
+          <q-card-section class="q-pa-lg">
+            <div class="q-gutter-md">
+              <q-select
+                v-model="selectedDevice"
+                :options="deviceOptions"
+                option-label="label"
+                option-value="value"
+                emit-value
+                map-options
+                label="Chọn thiết bị"
+                outlined
+                dense
+                clearable
+                hint="Để trống để xuất tất cả thiết bị"
+              >
+                <template v-slot:prepend>
+                  <q-icon name="devices" />
+                </template>
+              </q-select>
 
-            <q-input
-              v-model.number="days"
-              type="number"
-              label="Số ngày"
-              outlined
-              dense
-              :rules="[val => val > 0 || 'Vui lòng nhập số ngày lớn hơn 0']"
-              hint="Số ngày dữ liệu cần xuất"
-            >
-              <template v-slot:prepend>
-                <q-icon name="calendar_today" />
-              </template>
-            </q-input>
+              <q-input
+                v-model.number="days"
+                type="number"
+                label="Số ngày"
+                outlined
+                dense
+                :rules="[val => val > 0 || 'Vui lòng nhập số ngày lớn hơn 0']"
+                hint="Số ngày dữ liệu cần xuất"
+              >
+                <template v-slot:prepend>
+                  <q-icon name="calendar_today" />
+                </template>
+              </q-input>
 
-            <q-btn
-              color="primary"
-              icon="download"
-              label="Xuất CSV"
-              unelevated
-              @click="exportCSV"
-              :loading="exporting"
-              size="md"
-              class="full-width"
-            />
-          </div>
-        </q-card-section>
-      </q-card>
+              <q-btn
+                color="primary"
+                icon="download"
+                label="Xuất CSV"
+                unelevated
+                @click="exportCSV"
+                :loading="exporting"
+                size="md"
+                class="full-width"
+              />
+            </div>
+          </q-card-section>
+        </q-card>
 
-      <q-card class="col-12 col-md-6 modern-card" flat>
-        <q-card-section class="bg-green text-white">
-          <div class="text-h6 text-weight-bold">Thống kê</div>
-        </q-card-section>
-        <q-card-section class="q-pa-lg">
-          <div class="q-gutter-md">
-            <q-select
-              v-model="selectedDeviceForStats"
-              :options="deviceOptions"
-              option-label="label"
-              option-value="value"
-              emit-value
-              map-options
-              label="Chọn thiết bị"
-              outlined
-              dense
-              clearable
-            >
-              <template v-slot:prepend>
-                <q-icon name="devices" />
-              </template>
-            </q-select>
+        <q-card class="col-12 col-md-6 modern-card" flat>
+          <q-card-section class="bg-green text-white">
+            <div class="text-h6 text-weight-bold">Thống kê</div>
+          </q-card-section>
+          <q-card-section class="q-pa-lg">
+            <div class="q-gutter-md">
+              <q-select
+                v-model="selectedDeviceForStats"
+                :options="deviceOptions"
+                option-label="label"
+                option-value="value"
+                emit-value
+                map-options
+                label="Chọn thiết bị"
+                outlined
+                dense
+                clearable
+              >
+                <template v-slot:prepend>
+                  <q-icon name="devices" />
+                </template>
+              </q-select>
 
-            <q-input
-              v-model.number="daysForStats"
-              type="number"
-              label="Số ngày"
-              outlined
-              dense
-              :rules="[val => val > 0 || 'Vui lòng nhập số ngày lớn hơn 0']"
-            >
-              <template v-slot:prepend>
-                <q-icon name="calendar_today" />
-              </template>
-            </q-input>
+              <q-input
+                v-model.number="daysForStats"
+                type="number"
+                label="Số ngày"
+                outlined
+                dense
+                :rules="[val => val > 0 || 'Vui lòng nhập số ngày lớn hơn 0']"
+              >
+                <template v-slot:prepend>
+                  <q-icon name="calendar_today" />
+                </template>
+              </q-input>
 
-            <q-btn
-              color="green"
-              icon="analytics"
-              label="Xem thống kê"
-              unelevated
-              @click="viewStats"
-              :loading="loadingStats"
-              size="md"
-              class="full-width"
-            />
-          </div>
-        </q-card-section>
-      </q-card>
+              <q-btn
+                color="green"
+                icon="analytics"
+                label="Xem thống kê"
+                unelevated
+                @click="viewStats"
+                :loading="loadingStats"
+                size="md"
+                class="full-width"
+              />
+            </div>
+          </q-card-section>
+        </q-card>
       </div>
 
       <q-card v-if="stats" class="q-mt-md modern-card" flat>
-      <q-card-section class="bg-grey-2">
-        <div class="text-h6 text-weight-bold text-grey-9">Kết quả thống kê</div>
-      </q-card-section>
-      <q-card-section>
-        <pre class="stats-output">{{ JSON.stringify(stats, null, 2) }}</pre>
-      </q-card-section>
+        <q-card-section class="bg-grey-2">
+          <div class="text-h6 text-weight-bold text-grey-9">Kết quả thống kê</div>
+        </q-card-section>
+        <q-card-section>
+          <pre class="stats-output">{{ JSON.stringify(stats, null, 2) }}</pre>
+        </q-card-section>
       </q-card>
     </div>
   </q-page>
@@ -145,18 +145,13 @@ const exporting = ref(false)
 const loadingStats = ref(false)
 const stats = ref(null)
 
-const deviceOptions = computed(() => 
-  devices.map(d => ({ label: d.name, value: d.device_id }))
-)
+const deviceOptions = computed(() => devices.map(d => ({ label: d.name, value: d.device_id })))
 
 async function exportCSV() {
   try {
     exporting.value = true
-    const response = await exportAPI.exportCSV(
-      selectedDevice.value?.value || null,
-      days.value
-    )
-    
+    const response = await exportAPI.exportCSV(selectedDevice.value?.value || null, days.value)
+
     // Create download link
     const blob = new Blob([response.data], { type: 'text/csv' })
     const url = window.URL.createObjectURL(blob)
@@ -165,7 +160,7 @@ async function exportCSV() {
     link.download = `sensor_data_${selectedDevice.value?.value || 'all'}_${new Date().toISOString().split('T')[0]}.csv`
     link.click()
     window.URL.revokeObjectURL(url)
-    
+
     $q.notify({ type: 'positive', message: 'Đã xuất CSV thành công' })
   } catch (error) {
     $q.notify({ type: 'negative', message: 'Lỗi: ' + error.message })
@@ -257,4 +252,3 @@ onMounted(() => {
   }
 }
 </style>
-

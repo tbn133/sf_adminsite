@@ -12,12 +12,8 @@ export const useAppStore = defineStore('app', () => {
   const error = ref(null)
 
   // Computed
-  const onlineDevices = computed(() => 
-    devices.value.filter(d => d.online)
-  )
-  const offlineDevices = computed(() => 
-    devices.value.filter(d => !d.online)
-  )
+  const onlineDevices = computed(() => devices.value.filter(d => d.online))
+  const offlineDevices = computed(() => devices.value.filter(d => !d.online))
 
   // Actions
   async function fetchStats() {
@@ -74,7 +70,7 @@ export const useAppStore = defineStore('app', () => {
 
   function initWebSocket() {
     wsService.connect()
-    wsService.on('sensor_data', (data) => {
+    wsService.on('sensor_data', data => {
       // Update device sensor data in real-time
       const device = devices.value.find(d => d.device_id === data.device_id)
       if (device) {
@@ -97,7 +93,6 @@ export const useAppStore = defineStore('app', () => {
     fetchDevices,
     fetchSchedules,
     fetchRules,
-    initWebSocket
+    initWebSocket,
   }
 })
-

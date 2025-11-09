@@ -119,6 +119,39 @@
           </q-item>
 
           <q-separator class="q-my-md" />
+          <div class="text-overline text-grey-6 q-px-md q-mb-sm">GROW RECIPES</div>
+
+          <q-item
+            clickable
+            v-ripple
+            :to="{ name: 'recipes' }"
+            active-class="menu-item-active"
+            class="menu-item q-mb-xs"
+          >
+            <q-item-section avatar>
+              <q-icon name="eco" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-weight-medium">Công thức trồng</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item
+            clickable
+            v-ripple
+            :to="{ name: 'recipe-executions' }"
+            active-class="menu-item-active"
+            class="menu-item q-mb-xs"
+          >
+            <q-item-section avatar>
+              <q-icon name="play_circle" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-weight-medium">Trồng trọt đang chạy</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-separator class="q-my-md" />
           <div class="text-overline text-grey-6 q-px-md q-mb-sm">DỮ LIỆU</div>
 
           <q-item
@@ -215,8 +248,12 @@ const leftDrawerOpen = ref(true)
 }
 
 @keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .modern-drawer {
@@ -292,7 +329,9 @@ const leftDrawerOpen = ref(true)
 /* Page transitions */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 
 .fade-enter-from {
@@ -309,7 +348,13 @@ const leftDrawerOpen = ref(true)
 <style>
 body {
   margin: 0;
-  font-family: 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family:
+    'Inter',
+    'Roboto',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -338,4 +383,3 @@ body {
   background: #555;
 }
 </style>
-

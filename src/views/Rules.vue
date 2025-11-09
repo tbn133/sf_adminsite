@@ -23,59 +23,59 @@
       </div>
 
       <q-card class="modern-card" flat>
-      <q-table
-        :rows="rules"
-        :columns="columns"
-        row-key="id"
-        :loading="loading"
-        :rows-per-page-options="[10, 20, 50]"
-      >
-        <template v-slot:body-cell-enabled="props">
-          <q-td :props="props">
-            <q-toggle
-              :model-value="props.row.enabled"
-              @update:model-value="toggleRule(props.row)"
-              color="positive"
-            />
-          </q-td>
-        </template>
+        <q-table
+          :rows="rules"
+          :columns="columns"
+          row-key="id"
+          :loading="loading"
+          :rows-per-page-options="[10, 20, 50]"
+        >
+          <template v-slot:body-cell-enabled="props">
+            <q-td :props="props">
+              <q-toggle
+                :model-value="props.row.enabled"
+                @update:model-value="toggleRule(props.row)"
+                color="positive"
+              />
+            </q-td>
+          </template>
 
-        <template v-slot:body-cell-actions="props">
-          <q-td :props="props">
-            <div class="row q-gutter-xs">
-              <q-btn
-                flat
-                round
-                dense
-                icon="edit"
-                color="primary"
-                size="sm"
-                @click="editRule(props.row)"
-              >
-                <q-tooltip>Chỉnh sửa</q-tooltip>
-              </q-btn>
-              <q-btn
-                flat
-                round
-                dense
-                icon="delete"
-                color="negative"
-                size="sm"
-                @click="deleteRule(props.row.id)"
-              >
-                <q-tooltip>Xóa</q-tooltip>
-              </q-btn>
+          <template v-slot:body-cell-actions="props">
+            <q-td :props="props">
+              <div class="row q-gutter-xs">
+                <q-btn
+                  flat
+                  round
+                  dense
+                  icon="edit"
+                  color="primary"
+                  size="sm"
+                  @click="editRule(props.row)"
+                >
+                  <q-tooltip>Chỉnh sửa</q-tooltip>
+                </q-btn>
+                <q-btn
+                  flat
+                  round
+                  dense
+                  icon="delete"
+                  color="negative"
+                  size="sm"
+                  @click="deleteRule(props.row.id)"
+                >
+                  <q-tooltip>Xóa</q-tooltip>
+                </q-btn>
+              </div>
+            </q-td>
+          </template>
+
+          <template v-slot:no-data>
+            <div class="full-width row flex-center text-grey-6 q-gutter-sm q-pa-lg">
+              <q-icon name="rule" size="2em" />
+              <span>Chưa có rule nào</span>
             </div>
-          </q-td>
-        </template>
-
-        <template v-slot:no-data>
-          <div class="full-width row flex-center text-grey-6 q-gutter-sm q-pa-lg">
-            <q-icon name="rule" size="2em" />
-            <span>Chưa có rule nào</span>
-          </div>
-        </template>
-      </q-table>
+          </template>
+        </q-table>
       </q-card>
     </div>
 
@@ -132,13 +132,7 @@
 
         <q-card-actions align="right" class="q-pa-md">
           <q-btn flat label="Hủy" color="grey-7" v-close-popup />
-          <q-btn
-            unelevated
-            label="Lưu"
-            color="primary"
-            icon="save"
-            @click="saveRule"
-          />
+          <q-btn unelevated label="Lưu" color="primary" icon="save" @click="saveRule" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -162,19 +156,17 @@ const ruleForm = ref({
   name: '',
   condition: { logic: 'AND', conditions: [] },
   action: { pump: false, fan: false, light: false },
-  enabled: true
+  enabled: true,
 })
 
-const deviceOptions = computed(() => 
-  devices.map(d => ({ label: d.name, value: d.device_id }))
-)
+const deviceOptions = computed(() => devices.map(d => ({ label: d.name, value: d.device_id })))
 
 const columns = [
   { name: 'id', label: 'ID', field: 'id' },
   { name: 'device_id', label: 'Thiết bị', field: 'device_id' },
   { name: 'name', label: 'Tên', field: 'name' },
   { name: 'enabled', label: 'Bật/Tắt', field: 'enabled', align: 'center' },
-  { name: 'actions', label: 'Thao tác', align: 'center' }
+  { name: 'actions', label: 'Thao tác', align: 'center' },
 ]
 
 function editRule(rule) {
@@ -184,7 +176,7 @@ function editRule(rule) {
     name: rule.name,
     condition: rule.condition_json,
     action: rule.action_json,
-    enabled: rule.enabled
+    enabled: rule.enabled,
   }
   showCreateDialog.value = true
 }
@@ -219,7 +211,7 @@ async function deleteRule(id) {
     title: 'Xác nhận',
     message: 'Bạn có chắc muốn xóa rule này?',
     cancel: true,
-    persistent: true
+    persistent: true,
   }).onOk(async () => {
     try {
       await rulesAPI.delete(id)
@@ -296,4 +288,3 @@ onMounted(() => {
   }
 }
 </style>
-

@@ -24,87 +24,87 @@
       </div>
 
       <q-card class="modern-card" flat>
-      <q-table
-        :rows="devices"
-        :columns="columns"
-        row-key="id"
-        :loading="loading"
-        :filter="filter"
-        @request="onRequest"
-        :rows-per-page-options="[10, 20, 50]"
-        class="devices-table"
-      >
-        <template v-slot:top>
-          <div class="row full-width items-center q-gutter-md">
-            <q-input
-              v-model="filter"
-              placeholder="Tìm kiếm thiết bị..."
-              outlined
-              dense
-              clearable
-              class="col-12 col-md-4"
-            >
-              <template v-slot:prepend>
-                <q-icon name="search" />
-              </template>
-            </q-input>
-            <q-space />
-            <div class="text-body2 text-grey-6">
-              Tổng: <strong>{{ devices.length }}</strong> thiết bị
-            </div>
-          </div>
-        </template>
-
-        <template v-slot:body-cell-status="props">
-          <q-td :props="props">
-            <q-chip
-              :color="props.row.online ? 'positive' : 'negative'"
-              text-color="white"
-              dense
-              size="sm"
-              :icon="props.row.online ? 'check_circle' : 'cancel'"
-            >
-              {{ props.row.online ? 'Online' : 'Offline' }}
-            </q-chip>
-          </q-td>
-        </template>
-
-        <template v-slot:body-cell-actions="props">
-          <q-td :props="props">
-            <div class="row q-gutter-xs">
-              <q-btn
-                flat
-                round
+        <q-table
+          :rows="devices"
+          :columns="columns"
+          row-key="id"
+          :loading="loading"
+          :filter="filter"
+          @request="onRequest"
+          :rows-per-page-options="[10, 20, 50]"
+          class="devices-table"
+        >
+          <template v-slot:top>
+            <div class="row full-width items-center q-gutter-md">
+              <q-input
+                v-model="filter"
+                placeholder="Tìm kiếm thiết bị..."
+                outlined
                 dense
-                icon="visibility"
-                color="primary"
-                :to="{ name: 'device-detail', params: { deviceId: props.row.device_id } }"
-                size="sm"
+                clearable
+                class="col-12 col-md-4"
               >
-                <q-tooltip>Xem chi tiết</q-tooltip>
-              </q-btn>
-              <q-btn
-                flat
-                round
-                dense
-                icon="settings"
-                color="secondary"
-                @click="showControlDialog(props.row)"
-                size="sm"
-              >
-                <q-tooltip>Điều khiển</q-tooltip>
-              </q-btn>
+                <template v-slot:prepend>
+                  <q-icon name="search" />
+                </template>
+              </q-input>
+              <q-space />
+              <div class="text-body2 text-grey-6">
+                Tổng: <strong>{{ devices.length }}</strong> thiết bị
+              </div>
             </div>
-          </q-td>
-        </template>
+          </template>
 
-        <template v-slot:no-data>
-          <div class="full-width row flex-center text-grey-6 q-gutter-sm q-pa-lg">
-            <q-icon name="devices_other" size="2em" />
-            <span>Không có thiết bị nào</span>
-          </div>
-        </template>
-      </q-table>
+          <template v-slot:body-cell-status="props">
+            <q-td :props="props">
+              <q-chip
+                :color="props.row.online ? 'positive' : 'negative'"
+                text-color="white"
+                dense
+                size="sm"
+                :icon="props.row.online ? 'check_circle' : 'cancel'"
+              >
+                {{ props.row.online ? 'Online' : 'Offline' }}
+              </q-chip>
+            </q-td>
+          </template>
+
+          <template v-slot:body-cell-actions="props">
+            <q-td :props="props">
+              <div class="row q-gutter-xs">
+                <q-btn
+                  flat
+                  round
+                  dense
+                  icon="visibility"
+                  color="primary"
+                  :to="{ name: 'device-detail', params: { deviceId: props.row.device_id } }"
+                  size="sm"
+                >
+                  <q-tooltip>Xem chi tiết</q-tooltip>
+                </q-btn>
+                <q-btn
+                  flat
+                  round
+                  dense
+                  icon="settings"
+                  color="secondary"
+                  @click="showControlDialog(props.row)"
+                  size="sm"
+                >
+                  <q-tooltip>Điều khiển</q-tooltip>
+                </q-btn>
+              </div>
+            </q-td>
+          </template>
+
+          <template v-slot:no-data>
+            <div class="full-width row flex-center text-grey-6 q-gutter-sm q-pa-lg">
+              <q-icon name="devices_other" size="2em" />
+              <span>Không có thiết bị nào</span>
+            </div>
+          </template>
+        </q-table>
       </q-card>
     </div>
 
@@ -128,11 +128,7 @@
                   <div class="text-weight-medium">Máy bơm (Pump)</div>
                   <div class="text-caption text-grey-6">Điều khiển hệ thống tưới nước</div>
                 </div>
-                <q-toggle
-                  v-model="controlCommand.pump"
-                  color="primary"
-                  size="lg"
-                />
+                <q-toggle v-model="controlCommand.pump" color="primary" size="lg" />
               </q-card-section>
             </q-card>
 
@@ -143,11 +139,7 @@
                   <div class="text-weight-medium">Quạt (Fan)</div>
                   <div class="text-caption text-grey-6">Điều khiển hệ thống thông gió</div>
                 </div>
-                <q-toggle
-                  v-model="controlCommand.fan"
-                  color="secondary"
-                  size="lg"
-                />
+                <q-toggle v-model="controlCommand.fan" color="secondary" size="lg" />
               </q-card-section>
             </q-card>
 
@@ -158,11 +150,7 @@
                   <div class="text-weight-medium">Đèn (Light)</div>
                   <div class="text-caption text-grey-6">Điều khiển hệ thống chiếu sáng</div>
                 </div>
-                <q-toggle
-                  v-model="controlCommand.light"
-                  color="accent"
-                  size="lg"
-                />
+                <q-toggle v-model="controlCommand.light" color="accent" size="lg" />
               </q-card-section>
             </q-card>
           </div>
@@ -201,15 +189,21 @@ const sending = ref(false)
 const controlCommand = ref({
   pump: false,
   fan: false,
-  light: false
+  light: false,
 })
 
 const columns = [
   { name: 'device_id', label: 'Device ID', field: 'device_id', align: 'left', sortable: true },
   { name: 'name', label: 'Tên', field: 'name', align: 'left', sortable: true },
   { name: 'status', label: 'Trạng thái', field: 'online', align: 'center' },
-  { name: 'last_seen', label: 'Lần cuối', field: 'last_seen', align: 'left', format: (val) => new Date(val).toLocaleString('vi-VN') },
-  { name: 'actions', label: 'Thao tác', align: 'center' }
+  {
+    name: 'last_seen',
+    label: 'Lần cuối',
+    field: 'last_seen',
+    align: 'left',
+    format: val => new Date(val).toLocaleString('vi-VN'),
+  },
+  { name: 'actions', label: 'Thao tác', align: 'center' },
 ]
 
 function onRequest(props) {
@@ -234,14 +228,14 @@ async function sendControlCommand() {
       type: 'positive',
       message: 'Lệnh điều khiển đã được gửi thành công',
       position: 'top',
-      timeout: 2000
+      timeout: 2000,
     })
     showControl.value = false
   } catch (error) {
     $q.notify({
       type: 'negative',
       message: 'Lỗi khi gửi lệnh: ' + error.message,
-      position: 'top'
+      position: 'top',
     })
   } finally {
     sending.value = false
@@ -320,4 +314,3 @@ onMounted(() => {
   }
 }
 </style>
-

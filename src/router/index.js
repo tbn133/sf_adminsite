@@ -6,49 +6,60 @@ import Schedules from '../views/Schedules.vue'
 import Rules from '../views/Rules.vue'
 import Export from '../views/Export.vue'
 import Pairings from '../views/Pairings.vue'
+import GrowRecipes from '../views/GrowRecipes.vue'
+import RecipeExecutions from '../views/RecipeExecutions.vue'
 
 const routes = [
   {
     path: '/',
     name: 'dashboard',
-    component: Dashboard
+    component: Dashboard,
   },
   {
     path: '/devices',
     name: 'devices',
-    component: Devices
+    component: Devices,
   },
   {
     path: '/devices/:deviceId',
     name: 'device-detail',
-    component: DeviceDetail
+    component: DeviceDetail,
   },
   {
     path: '/schedules',
     name: 'schedules',
-    component: Schedules
+    component: Schedules,
   },
   {
     path: '/rules',
     name: 'rules',
-    component: Rules
+    component: Rules,
   },
   {
     path: '/export',
     name: 'export',
-    component: Export
+    component: Export,
   },
   {
     path: '/pairings',
     name: 'pairings',
-    component: Pairings
-  }
+    component: Pairings,
+  },
+  {
+    path: '/recipes',
+    name: 'recipes',
+    component: GrowRecipes,
+  },
+  {
+    path: '/recipe-executions',
+    name: 'recipe-executions',
+    component: RecipeExecutions,
+  },
 ]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
 })
 
 export default router
-
