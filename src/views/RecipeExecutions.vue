@@ -7,34 +7,22 @@
           <q-btn
             :color="statusFilter === 'running' ? 'primary' : 'grey'"
             label="Running"
-            @click="
-              statusFilter = 'running'
-              loadExecutions()
-            "
+            @click="setFilter('running')"
           />
           <q-btn
             :color="statusFilter === 'completed' ? 'primary' : 'grey'"
             label="Completed"
-            @click="
-              statusFilter = 'completed'
-              loadExecutions()
-            "
+            @click="setFilter('completed')"
           />
           <q-btn
             :color="statusFilter === 'stopped' ? 'primary' : 'grey'"
             label="Stopped"
-            @click="
-              statusFilter = 'stopped'
-              loadExecutions()
-            "
+            @click="setFilter('stopped')"
           />
           <q-btn
             :color="statusFilter === null ? 'primary' : 'grey'"
             label="All"
-            @click="
-              statusFilter = null
-              loadExecutions()
-            "
+            @click="setFilter(null)"
           />
         </q-btn-group>
       </div>
@@ -300,6 +288,11 @@ export default {
       return date.toLocaleString()
     }
 
+    const setFilter = filter => {
+      statusFilter.value = filter
+      loadExecutions()
+    }
+
     onMounted(() => {
       loadExecutions()
       // Auto-refresh every 30 seconds
@@ -326,6 +319,7 @@ export default {
       resumeExecution,
       getStatusColor,
       formatDate,
+      setFilter,
     }
   },
 }
