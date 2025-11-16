@@ -23,6 +23,15 @@ export const adminAPI = {
   resetDevice: deviceId => apiClient.post(`/admin/devices/${deviceId}/reset`),
   get: endpoint => apiClient.get(endpoint),
   post: (endpoint, data, config) => apiClient.post(endpoint, data, config),
+  // Notifications
+  getNotifications: () => apiClient.get('/admin/notifications'),
+  markNotificationAsRead: notificationId =>
+    apiClient.patch(`/admin/notifications/${notificationId}/read`),
+  markNotificationAsUnread: notificationId =>
+    apiClient.patch(`/admin/notifications/${notificationId}/unread`),
+  markAllNotificationsAsRead: () => apiClient.post('/admin/notifications/read-all'),
+  deleteNotification: notificationId => apiClient.delete(`/admin/notifications/${notificationId}`),
+  clearAllNotifications: () => apiClient.delete('/admin/notifications'),
 }
 
 // Sensors API
@@ -76,6 +85,16 @@ export const pairingAPI = {
   getPending: () => apiClient.get('/admin/pairings/pending'),
   approve: (pairingId, data) => apiClient.post(`/admin/pairings/${pairingId}/approve`, data),
   reject: (pairingId, reason) => apiClient.post(`/admin/pairings/${pairingId}/reject`, { reason }),
+}
+
+// Notifications API
+export const notificationsAPI = {
+  getAll: () => apiClient.get('/admin/notifications'),
+  markAsRead: notificationId => apiClient.patch(`/admin/notifications/${notificationId}/read`),
+  markAsUnread: notificationId => apiClient.patch(`/admin/notifications/${notificationId}/unread`),
+  markAllAsRead: () => apiClient.post('/admin/notifications/read-all'),
+  delete: notificationId => apiClient.delete(`/admin/notifications/${notificationId}`),
+  clearAll: () => apiClient.delete('/admin/notifications'),
 }
 
 export default apiClient

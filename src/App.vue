@@ -23,18 +23,16 @@
         <q-space />
         <div class="row items-center q-gutter-sm">
           <q-btn flat round dense icon="search" class="toolbar-btn" size="md">
-            <q-tooltip>Tìm kiếm</q-tooltip>
+            <q-tooltip>{{ $t('common.search') }}</q-tooltip>
           </q-btn>
-          <q-btn flat round dense icon="notifications" class="toolbar-btn" size="md">
-            <q-badge color="red-6" floating rounded>3</q-badge>
-            <q-tooltip>Thông báo</q-tooltip>
-          </q-btn>
+          <LanguageSwitcher />
+          <NotificationCenter />
           <q-separator vertical dark class="q-mx-sm" />
           <q-btn flat round class="toolbar-btn" size="md">
             <q-avatar size="36px" color="white" text-color="primary">
               <q-icon name="person" size="20px" />
             </q-avatar>
-            <q-tooltip>Tài khoản</q-tooltip>
+            <q-tooltip>{{ $t('common.account') }}</q-tooltip>
           </q-btn>
         </div>
       </q-toolbar>
@@ -208,6 +206,8 @@
 
 <script setup>
 import { ref } from 'vue'
+import NotificationCenter from '@/components/NotificationCenter.vue'
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 
 const leftDrawerOpen = ref(true)
 </script>

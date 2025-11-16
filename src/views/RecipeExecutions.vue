@@ -203,7 +203,7 @@ export default {
             await loadProgress(execution.id)
           }
         }
-      } catch (error) {
+      } catch {
         $q.notify({ type: 'negative', message: 'Failed to load executions' })
       } finally {
         loading.value = false
