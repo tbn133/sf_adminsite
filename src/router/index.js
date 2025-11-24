@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Dashboard from '../views/Dashboard.vue'
 import Devices from '../views/Devices.vue'
+import DevicesManagement from '../views/DevicesManagement.vue'
+import Users from '../views/Users.vue'
 import DeviceDetail from '../views/DeviceDetail.vue'
 import Schedules from '../views/Schedules.vue'
 import Rules from '../views/Rules.vue'
@@ -19,6 +21,16 @@ const routes = [
     path: '/devices',
     name: 'devices',
     component: Devices,
+  },
+  {
+    path: '/devices-management',
+    name: 'devices-management',
+    component: DevicesManagement,
+  },
+  {
+    path: '/users',
+    name: 'users',
+    component: Users,
   },
   {
     path: '/devices/:deviceId',
