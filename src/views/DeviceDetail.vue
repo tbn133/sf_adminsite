@@ -10,6 +10,14 @@
       </div>
       <q-space />
       <q-btn
+        color="negative"
+        icon="delete"
+        label="Xóa thiết bị"
+        unelevated
+        class="q-mr-sm"
+        @click="deleteDevice"
+      />
+      <q-btn
         color="primary"
         icon="refresh"
         label="Làm mới"
@@ -287,12 +295,13 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { adminAPI, sensorsAPI, controlAPI } from '../services/api'
 import { useQuasar } from 'quasar'
 import { format } from 'date-fns'
 
 const route = useRoute()
+const router = useRouter()
 const $q = useQuasar()
 
 const deviceId = computed(() => route.params.deviceId)
@@ -448,6 +457,27 @@ async function resetDevice() {
       message: 'Lỗi: ' + error.message,
     })
   }
+}
+
+function deleteDevice() {
+  if (!device.value) return
+  $q.dialog({
+    title: 'Xác nhận xóa',
+    message: `Bạn có chắc muốn xóa thiết bị "${deviceId.value}"? Toàn bộ dữ liệu cảm biến, lịch sử điều khiển và liên kết người dùng sẽ bị xóa.`,
+    cancel: true,
+    persistent: true,
+  }).onOk(async () => {
+    try {
+      await adminAPI.delete(`/api/admin/devices/${device.value.id}`)
+      $q.notify({ type: 'positive', message: 'Thiết bị đã được xóa' })
+      router.push({ name: 'devices' })
+    } catch (error) {
+      $q.notify({
+        type: 'negative',
+        message: 'Lỗi: ' + (error.response?.data?.detail || error.message),
+      })
+    }
+  })
 }
 
 // VPD Helper Functions

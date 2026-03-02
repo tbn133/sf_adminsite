@@ -71,7 +71,7 @@
 
           <template v-slot:body-cell-actions="props">
             <q-td :props="props">
-              <div class="row q-gutter-xs">
+              <div class="row q-gutter-xs no-wrap">
                 <q-btn
                   flat
                   round
@@ -93,6 +93,17 @@
                   size="sm"
                 >
                   <q-tooltip>Điều khiển</q-tooltip>
+                </q-btn>
+                <q-btn
+                  flat
+                  round
+                  dense
+                  icon="delete"
+                  color="negative"
+                  @click="deleteDevice(props.row)"
+                  size="sm"
+                >
+                  <q-tooltip>Xóa</q-tooltip>
                 </q-btn>
               </div>
             </q-td>
@@ -218,6 +229,26 @@ function showControlDialog(device) {
   selectedDevice.value = device
   controlCommand.value = { pump: false, fan: false, light: false }
   showControl.value = true
+}
+
+function deleteDevice(device) {
+  $q.dialog({
+    title: 'Xác nhận xóa',
+    message: `Bạn có chắc muốn xóa thiết bị "${device.device_id}"? Toàn bộ dữ liệu liên quan sẽ bị xóa.`,
+    cancel: true,
+    persistent: true,
+  }).onOk(async () => {
+    try {
+      await adminAPI.delete(`/api/admin/devices/${device.id}`)
+      $q.notify({ type: 'positive', message: 'Thiết bị đã được xóa' })
+      appStore.fetchDevices()
+    } catch (error) {
+      $q.notify({
+        type: 'negative',
+        message: 'Lỗi: ' + (error.response?.data?.detail || error.message),
+      })
+    }
+  })
 }
 
 async function sendControlCommand() {
