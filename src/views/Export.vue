@@ -129,6 +129,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useAppStore } from '../stores/app'
 import { exportAPI } from '../services/api'
 import { useQuasar } from 'quasar'
@@ -136,7 +137,7 @@ import { useQuasar } from 'quasar'
 const appStore = useAppStore()
 const $q = useQuasar()
 
-const { devices } = appStore
+const { devices } = storeToRefs(appStore)
 const selectedDevice = ref(null)
 const selectedDeviceForStats = ref(null)
 const days = ref(7)
@@ -145,7 +146,9 @@ const exporting = ref(false)
 const loadingStats = ref(false)
 const stats = ref(null)
 
-const deviceOptions = computed(() => devices.map(d => ({ label: d.name, value: d.device_id })))
+const deviceOptions = computed(() =>
+  devices.value.map(d => ({ label: d.name, value: d.device_id }))
+)
 
 async function exportCSV() {
   try {

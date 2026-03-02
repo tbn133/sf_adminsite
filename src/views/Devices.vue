@@ -185,6 +185,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useAppStore } from '../stores/app'
 import { adminAPI } from '../services/api'
 import { useQuasar } from 'quasar'
@@ -192,7 +193,7 @@ import { useQuasar } from 'quasar'
 const appStore = useAppStore()
 const $q = useQuasar()
 
-const { devices, loading } = appStore
+const { devices, loading } = storeToRefs(appStore)
 const filter = ref('')
 const showControl = ref(false)
 const selectedDevice = ref(null)

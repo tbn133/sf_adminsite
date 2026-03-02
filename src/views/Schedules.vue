@@ -133,6 +133,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useAppStore } from '../stores/app'
 import { schedulesAPI } from '../services/api'
 import { useQuasar } from 'quasar'
@@ -140,7 +141,7 @@ import { useQuasar } from 'quasar'
 const appStore = useAppStore()
 const $q = useQuasar()
 
-const { schedules, loading } = appStore
+const { schedules, loading } = storeToRefs(appStore)
 const showCreateDialog = ref(false)
 const editingSchedule = ref(null)
 const scheduleForm = ref({

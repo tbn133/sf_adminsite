@@ -141,6 +141,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useAppStore } from '../stores/app'
 import { rulesAPI } from '../services/api'
 import { useQuasar } from 'quasar'
@@ -148,7 +149,7 @@ import { useQuasar } from 'quasar'
 const appStore = useAppStore()
 const $q = useQuasar()
 
-const { rules, loading, devices } = appStore
+const { rules, loading, devices } = storeToRefs(appStore)
 const showCreateDialog = ref(false)
 const editingRule = ref(null)
 const ruleForm = ref({
@@ -159,7 +160,9 @@ const ruleForm = ref({
   enabled: true,
 })
 
-const deviceOptions = computed(() => devices.map(d => ({ label: d.name, value: d.device_id })))
+const deviceOptions = computed(() =>
+  devices.value.map(d => ({ label: d.name, value: d.device_id }))
+)
 
 const columns = [
   { name: 'id', label: 'ID', field: 'id' },
