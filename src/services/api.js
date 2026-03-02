@@ -23,6 +23,8 @@ export const adminAPI = {
   resetDevice: deviceId => apiClient.post(`/admin/devices/${deviceId}/reset`),
   get: endpoint => apiClient.get(endpoint),
   post: (endpoint, data, config) => apiClient.post(endpoint, data, config),
+  put: (endpoint, data, config) => apiClient.put(endpoint, data, config),
+  delete: endpoint => apiClient.delete(endpoint),
   // Notifications
   getNotifications: () => apiClient.get('/admin/notifications'),
   markNotificationAsRead: notificationId =>
