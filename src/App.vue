@@ -1,5 +1,9 @@
 <template>
-  <q-layout view="hHh lpR fFf" class="modern-layout">
+  <!-- Login page: no layout wrapper -->
+  <router-view v-if="isLoginPage" />
+
+  <!-- Admin layout -->
+  <q-layout v-else view="hHh lpR fFf" class="modern-layout">
     <q-header elevated class="header-gradient">
       <q-toolbar class="q-px-lg q-py-sm">
         <q-btn
@@ -32,7 +36,19 @@
             <q-avatar size="36px" color="white" text-color="primary">
               <q-icon name="person" size="20px" />
             </q-avatar>
-            <q-tooltip>{{ $t('common.account') }}</q-tooltip>
+            <q-tooltip>{{ authStore.user?.email || $t('common.account') }}</q-tooltip>
+            <q-menu>
+              <q-list style="min-width: 180px">
+                <q-item-label header>{{ authStore.user?.email }}</q-item-label>
+                <q-separator />
+                <q-item clickable v-close-popup @click="handleLogout">
+                  <q-item-section avatar>
+                    <q-icon name="logout" color="negative" />
+                  </q-item-section>
+                  <q-item-section>Đăng xuất</q-item-section>
+                </q-item>
+              </q-list>
+            </q-menu>
           </q-btn>
         </div>
       </q-toolbar>
@@ -205,11 +221,23 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import NotificationCenter from '@/components/NotificationCenter.vue'
 import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
+import { useAuthStore } from '@/stores/auth'
+
+const route = useRoute()
+const router = useRouter()
+const authStore = useAuthStore()
 
 const leftDrawerOpen = ref(true)
+const isLoginPage = computed(() => route.name === 'login')
+
+function handleLogout() {
+  authStore.logout()
+  router.push({ name: 'login' })
+}
 </script>
 
 <style scoped>

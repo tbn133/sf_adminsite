@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import Login from '../views/Login.vue'
 import Dashboard from '../views/Dashboard.vue'
 import Devices from '../views/Devices.vue'
 import DevicesManagement from '../views/DevicesManagement.vue'
@@ -12,6 +13,12 @@ import GrowRecipes from '../views/GrowRecipes.vue'
 import RecipeExecutions from '../views/RecipeExecutions.vue'
 
 const routes = [
+  {
+    path: '/login',
+    name: 'login',
+    component: Login,
+    meta: { public: true },
+  },
   {
     path: '/',
     name: 'dashboard',
@@ -72,6 +79,17 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+})
+
+// Auth guard — redirect to login if not authenticated
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('access_token')
+  if (to.meta.public) {
+    if (token && to.name === 'login') return next({ name: 'dashboard' })
+    return next()
+  }
+  if (!token) return next({ name: 'login' })
+  next()
 })
 
 export default router
