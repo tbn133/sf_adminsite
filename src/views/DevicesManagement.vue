@@ -219,11 +219,8 @@
                   color="negative"
                   @click="deleteDevice(props.row)"
                   size="sm"
-                  :disable="props.row.token_used"
                 >
-                  <q-tooltip>{{
-                    props.row.token_used ? 'Không thể xóa (đã kích hoạt)' : 'Xóa'
-                  }}</q-tooltip>
+                  <q-tooltip>Xóa</q-tooltip>
                 </q-btn>
               </div>
             </q-td>
@@ -586,9 +583,14 @@ async function downloadAllQR() {
 }
 
 async function deleteDevice(device) {
+  const isClaimed = device.token_used || device.claimed_by
+  const message = isClaimed
+    ? `Thiết bị "${device.device_id}" đã được kích hoạt. Xóa sẽ hủy liên kết với người dùng và xóa toàn bộ dữ liệu. Tiếp tục?`
+    : `Bạn có chắc muốn xóa thiết bị "${device.device_id}"?`
+
   $q.dialog({
     title: 'Xác nhận xóa',
-    message: `Bạn có chắc muốn xóa thiết bị "${device.device_id}"?`,
+    message,
     cancel: true,
     persistent: true,
   }).onOk(async () => {
